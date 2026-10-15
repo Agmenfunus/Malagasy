@@ -1,0 +1,967 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Dingana Malagasy</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700&family=Source+Sans+3:wght@400;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Mise en page : une colonne étroite façon carnet de classe, chemin d'unités en liste verticale, cartes plein cadre pour les révisions. */
+:root {
+  --bg: #eef2ea;
+  --surface: #f9fbf6;
+  --fg: #17301f;
+  --muted: #55675a;
+  --line: #cfd9c9;
+  --accent: #6b3fa0;       /* jacaranda, en fleur à Antananarivo en octobre */
+  --accent-fg: #ffffff;
+  --rice: #3f7a3a;         /* rizière */
+  --earth: #b4532a;        /* latérite */
+  --good: #2f7a3e;
+  --bad: #b3402a;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Source Sans 3", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #101a13; --surface: #17251b; --fg: #e6efe2; --muted: #98ab9c; --line: #2b3d30;
+    --accent: #b99be6; --accent-fg: #1a0f2b; --rice: #7fc07a; --earth: #e08a5f; --good: #7fd08e; --bad: #f0907a;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #101a13; --surface: #17251b; --fg: #e6efe2; --muted: #98ab9c; --line: #2b3d30;
+  --accent: #b99be6; --accent-fg: #1a0f2b; --rice: #7fc07a; --earth: #e08a5f; --good: #7fd08e; --bad: #f0907a;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--fg); font-family: var(--font-body); font-size: 17px; line-height: 1.5; padding-inline: 16px; padding-block: 20px 48px; }
+.wrap { max-width: 640px; margin-inline: auto; display: flex; flex-direction: column; gap: 20px; min-width: 0; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; line-height: 1.15; }
+h1 { font-size: 2rem; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.1rem; }
+p { margin: 0; }
+button { font: inherit; color: inherit; cursor: pointer; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.top { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.brand { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; letter-spacing: .01em; }
+.brand small { font-family: var(--font-mono); font-weight: 400; color: var(--muted); font-size: .72rem; letter-spacing: .08em; text-transform: uppercase; margin-left: 8px; }
+.link { background: none; border: 0; padding: 6px 0; color: var(--accent); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.btn { background: var(--accent); color: var(--accent-fg); border: 0; border-radius: 10px; padding: 12px 18px; font-weight: 600; min-height: 46px; }
+.btn.alt { background: transparent; color: var(--fg); border: 1.5px solid var(--line); }
+.btn:disabled { opacity: .45; cursor: default; }
+.row { display: flex; gap: 10px; flex-wrap: wrap; }
+.row > * { flex: 1 1 130px; }
+.banner { background: var(--surface); border: 1.5px solid var(--accent); border-radius: 14px; padding: 16px; display: flex; flex-direction: column; gap: 12px; }
+.banner strong { font-family: var(--font-display); font-size: 1.25rem; }
+.stats { display: flex; gap: 20px; flex-wrap: wrap; color: var(--muted); font-size: .95rem; }
+.stats b { color: var(--fg); font-variant-numeric: tabular-nums; font-family: var(--font-mono); font-weight: 500; }
+.path { display: flex; flex-direction: column; list-style: none; padding: 0; margin: 0; }
+.unit { display: grid; grid-template-columns: 44px 1fr auto; gap: 12px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); background: none; border-inline: 0; border-bottom: 0; text-align: left; width: 100%; }
+.unit:last-child { border-bottom: 1px solid var(--line); }
+.unit .no { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--line); display: grid; place-items: center; font-family: var(--font-mono); font-size: .9rem; color: var(--muted); }
+.unit.open .no { border-color: var(--accent); color: var(--accent); }
+.unit.done .no { background: var(--rice); border-color: var(--rice); color: var(--bg); }
+.unit .nm { display: flex; flex-direction: column; min-width: 0; }
+.unit .nm span { color: var(--muted); font-size: .9rem; }
+.unit .nm em { font-style: normal; font-family: var(--font-display); font-size: 1.05rem; font-weight: 500; }
+.unit.locked { opacity: .5; cursor: default; }
+.meter { width: 64px; height: 6px; border-radius: 3px; background: var(--line); overflow: hidden; }
+.meter i { display: block; height: 100%; background: var(--rice); }
+.tag { font-family: var(--font-mono); font-size: .75rem; color: var(--muted); letter-spacing: .04em; }
+.words { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; }
+.word { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 4px 14px; padding: 12px 0; border-top: 1px solid var(--line); }
+.word .mg { font-family: var(--font-display); font-weight: 700; font-size: 1.15rem; overflow-wrap: anywhere; }
+.word .fr { overflow-wrap: anywhere; }
+.word .pr { grid-column: 1 / -1; font-family: var(--font-mono); font-size: .8rem; color: var(--muted); display: flex; align-items: center; gap: 10px; }
+.say { background: none; border: 1px solid var(--line); border-radius: 8px; padding: 2px 8px; font-size: .8rem; color: var(--accent); }
+.note { background: var(--surface); border-left: 4px solid var(--earth); border-radius: 0 10px 10px 0; padding: 14px 16px; display: flex; flex-direction: column; gap: 6px; }
+.note .tag { color: var(--earth); text-transform: uppercase; letter-spacing: .1em; }
+.dial { display: flex; flex-direction: column; gap: 10px; }
+.line { display: flex; flex-direction: column; background: var(--surface); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; }
+.line b { font-family: var(--font-display); font-size: 1.05rem; }
+.line span { color: var(--muted); font-size: .92rem; }
+.line:nth-child(even) { margin-left: 24px; }
+.card { background: var(--surface); border: 1.5px solid var(--line); border-radius: 18px; padding: 28px 20px; min-height: 260px; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; gap: 14px; }
+.card .big { font-family: var(--font-display); font-weight: 700; font-size: clamp(1.9rem, 8vw, 2.6rem); overflow-wrap: anywhere; }
+.card .pron { font-family: var(--font-mono); color: var(--muted); font-size: .95rem; }
+.card .ans { font-size: 1.4rem; overflow-wrap: anywhere; }
+.progress { height: 6px; background: var(--line); border-radius: 3px; overflow: hidden; }
+.progress i { display: block; height: 100%; background: var(--accent); transition: width .2s; }
+.opts { display: flex; flex-direction: column; gap: 10px; }
+.opt { text-align: left; background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px; padding: 14px 16px; min-height: 52px; overflow-wrap: anywhere; }
+.opt.right { border-color: var(--good); background: color-mix(in srgb, var(--good) 14%, var(--surface)); }
+.opt.wrong { border-color: var(--bad); background: color-mix(in srgb, var(--bad) 14%, var(--surface)); }
+.rate { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.rate .btn { padding-inline: 6px; }
+.rate .again { background: var(--bad); color: #fff; }
+.rate .easy { background: var(--rice); color: #fff; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) .rate .again, :root:not([data-theme="light"]) .rate .easy { color: #101a13; } }
+:root[data-theme="dark"] .rate .again, :root[data-theme="dark"] .rate .easy { color: #101a13; }
+.center { text-align: center; display: flex; flex-direction: column; gap: 14px; align-items: center; padding-block: 24px; }
+.score { font-family: var(--font-display); font-size: 3rem; font-weight: 700; color: var(--accent); }
+.muted { color: var(--muted); }
+.set { display: flex; flex-direction: column; gap: 12px; }
+.set label { display: flex; gap: 10px; align-items: center; }
+.set input { width: 20px; height: 20px; accent-color: var(--accent); }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+.dots{display:flex;gap:4px}
+.dots i{width:10px;height:10px;border-radius:50%;border:1.5px solid var(--line);display:block}
+.dots i.on{background:var(--rice);border-color:var(--rice)}
+.lessons{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:8px}
+.lesson{display:grid;grid-template-columns:36px 1fr auto;gap:12px;align-items:center;width:100%;text-align:left;background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;min-height:56px}
+.lesson .no{width:36px;height:36px;border-radius:50%;border:2px solid var(--line);display:grid;place-items:center;font-family:var(--font-mono);font-size:.85rem;color:var(--muted)}
+.lesson.next{border-color:var(--accent)}
+.lesson.next .no{border-color:var(--accent);color:var(--accent)}
+.lesson.passed .no{background:var(--rice);border-color:var(--rice);color:var(--bg)}
+.lesson.locked{opacity:.5}
+.lesson .nm{display:flex;flex-direction:column;min-width:0}
+.lesson .nm em{font-style:normal;font-family:var(--font-display);font-weight:500}
+.lesson .nm span{color:var(--muted);font-size:.88rem}
+.goal{display:flex;flex-direction:column;gap:6px}
+.goal .progress i{background:var(--rice)}
+.match{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.match .col{display:flex;flex-direction:column;gap:10px;min-width:0}
+.mt{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px;min-height:52px;text-align:left;overflow-wrap:anywhere}
+.mt.sel{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 14%,var(--surface))}
+.mt.ok{border-color:var(--good);background:color-mix(in srgb,var(--good) 14%,var(--surface));opacity:.6}
+.mt.no{border-color:var(--bad);background:color-mix(in srgb,var(--bad) 14%,var(--surface))}
+.inp{width:100%;font:inherit;font-size:1.15rem;padding:14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--fg)}
+.fb{border-radius:12px;padding:12px 14px;border:1.5px solid var(--line);background:var(--surface);display:flex;flex-direction:column;gap:2px}
+.fb.ok{border-color:var(--good)}
+.fb.ko{border-color:var(--bad)}
+.fb b{font-family:var(--font-display)}
+.tiles{display:flex;flex-wrap:wrap;gap:8px;min-height:52px}
+.tile{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:10px 12px;font-family:var(--font-display);font-weight:500}
+.answerbox{border-bottom:2px solid var(--line);padding-bottom:10px;min-height:62px}
+.dict{list-style:none;padding:0;margin:0;display:flex;flex-direction:column}
+.dict li{padding:10px 0;border-top:1px solid var(--line);display:flex;flex-direction:column}
+.dict li b{font-family:var(--font-display)}
+.dict li span{color:var(--muted);font-size:.9rem}
+.form{display:flex;flex-direction:column;gap:10px}
+textarea.inp{min-height:110px;font-family:var(--font-mono);font-size:.8rem}
+.small{font-size:.9rem}
+.tag.hi{color:var(--earth)}
+</style>
+
+<div class="wrap" id="app"></div>
+
+<script>
+// Contenu des chapitres. Chaque mot : [malgache, français, prononciation approchée]
+const UNITS = [
+  {
+    id: "u1", t: "Saluer et remercier", mg: "Miarahaba",
+    intro: "Les mots que tu entendras en premier, dès qu'on se retrouve ou qu'on se quitte.",
+    items: [
+      ["Salama", "salut, bonjour", "sa-lam'"],
+      ["Manao ahoana", "bonjour, comment vas-tu ?", "ma-naou a-hou-an'"],
+      ["Akory", "salut ! ça va ? (familier)", "a-kou-ri"],
+      ["Tsara", "bien, bon", "tsar'"],
+      ["Tsara fa ianao ?", "bien, et toi ?", "tsar' fa i-a-naou"],
+      ["Misaotra", "merci", "mi-saoutr'"],
+      ["Misaotra betsaka", "merci beaucoup", "mi-saoutr' bé-tsak'"],
+      ["Azafady", "s'il vous plaît, excusez-moi", "a-za-fa-di"],
+      ["Eny", "oui", "é-ni"],
+      ["Tsia", "non", "tsi-a"],
+      ["Veloma", "au revoir", "vé-lou-m'"],
+      ["Mandra-pihaona", "à la prochaine", "mandr' pi-haou-n'"],
+      ["Tonga soa", "bienvenue", "toun-ga sou-a"],
+      ["Tompoko", "oui (poli), ou « pardon ? » quand on t'appelle", "toum-pou-kou"]
+    ],
+    tip: "Prononciation : o se lit « ou », y final se lit « i », ao se lit « aou ». Les fins en -ka, -tra, -na sont à peine prononcées : misaotra sonne « misaoutr' ». Manao ahoana convient à toute heure du jour, akory plutôt entre proches.",
+    dialog: [
+      ["Salama !", "Salut !"],
+      ["Manao ahoana ianao ?", "Comment vas-tu ?"],
+      ["Tsara aho. Fa ianao ?", "Je vais bien. Et toi ?"],
+      ["Tsara. Misaotra !", "Bien. Merci !"]
+    ]
+  },
+  {
+    id: "u2", t: "La famille proche", mg: "Ny fianakaviana",
+    intro: "Papa, maman, frères, sœurs : les mots de la maison.",
+    items: [
+      ["Fianakaviana", "famille", "fi-a-na-ka-vi-an'"],
+      ["Neny", "maman", "né-ni"],
+      ["Dada", "papa", "da-da"],
+      ["Reny", "mère", "ré-ni"],
+      ["Ray", "père", "raï"],
+      ["Zanaka", "enfant", "za-nak'"],
+      ["Zazalahy", "garçon", "za-za-la-hi"],
+      ["Zazavavy", "fille", "za-za-va-vi"],
+      ["Rahalahy", "frère (d'un homme)", "ra-ha-la-hi"],
+      ["Anabavy", "sœur (d'un homme)", "a-na-ba-vi"],
+      ["Zoky", "aîné(e)", "zou-ki"],
+      ["Zandriny", "cadet(te)", "zan-dri-ni"]
+    ],
+    tip: "Neny et dada sont les mots du quotidien pour maman et papa. Reny et ray sont plus neutres. Pour frère et sœur, le mot dépend de qui parle : un homme dit rahalahy et anabavy, une femme dit anadahy (frère) et rahavavy (sœur). Zoky et zandriny servent pour l'âge dans une fratrie."
+  },
+  {
+    id: "u3", t: "Toute la famille", mg: "Ny havana",
+    intro: "Grands-parents, oncles, tantes, et la manière de dire « ma mère », « ton enfant ».",
+    items: [
+      ["Dadabe", "grand-père", "da-da-bé"],
+      ["Nenibe", "grand-mère", "né-ni-bé"],
+      ["Dadatoa", "oncle", "da-da-tou-a"],
+      ["Nenitoa", "tante", "né-ni-tou-a"],
+      ["Vady", "époux, épouse", "va-di"],
+      ["Havana", "parent, membre de la famille", "ha-van'"],
+      ["Zafy", "petit-enfant", "za-fi"],
+      ["Reniko", "ma mère", "ré-ni-kou"],
+      ["Raiko", "mon père", "raï-kou"],
+      ["Zanako", "mon enfant", "za-na-kou"],
+      ["Vadiko", "mon époux, mon épouse", "va-di-kou"],
+      ["Havako", "mon parent", "ha-va-kou"],
+      ["Tiako ianao", "je t'aime (bien)", "ti-a-kou i-a-naou"]
+    ],
+    tip: "Pour dire « mon / ma », on ajoute -ko à la fin du mot : vady → vadiko. Pour « ton / ta », c'est -nao (zanakao, ton enfant). Pour « son / sa », c'est -ny (reniny, sa mère). Si le mot finit par -ka ou -na, cette fin tombe : zanaka → zanako, havana → havako."
+  },
+  {
+    id: "u4", t: "Se présenter", mg: "Mampahafantatra tena",
+    intro: "Dire qui tu es, et expliquer que tu apprends la langue.",
+    items: [
+      ["Aho", "je, moi", "a-hou"],
+      ["Ianao", "tu, toi", "i-a-naou"],
+      ["Izy", "il, elle", "i-zi"],
+      ["Isika", "nous (toi inclus)", "i-sik'"],
+      ["Izahay", "nous (toi exclu)", "i-za-haï"],
+      ["Ianareo", "vous (pluriel)", "i-a-na-ré-ou"],
+      ["Iza no anaranao ?", "comment t'appelles-tu ?", "i-za nou a-na-ra-naou"],
+      ["Ny anarako dia ...", "je m'appelle ...", "ni a-na-ra-kou dia"],
+      ["Mianatra aho", "j'apprends", "mi-a-natr' a-hou"],
+      ["Tsy mahay miteny malagasy aho", "je ne sais pas parler malgache", "tsi ma-haï mi-té-ni ma-la-ga-si a-hou"],
+      ["Malagasy", "malgache (personne ou langue)", "ma-la-ga-si"],
+      ["Gasy", "malgache (familier)", "ga-si"],
+      ["Vazaha", "étranger (souvent une personne blanche)", "va-za"]
+    ],
+    tip: "Le malgache a deux « nous » : isika inclut la personne à qui tu parles, izahay l'exclut. Tu entendras souvent vazaha dans la rue : c'est un mot courant pour désigner l'étranger, pas une insulte en soi.",
+    dialog: [
+      ["Iza no anaranao ?", "Comment t'appelles-tu ?"],
+      ["Ny anarako dia Rakoto.", "Je m'appelle Rakoto."],
+      ["Mahay miteny gasy ve ianao ?", "Tu sais parler malgache ?"],
+      ["Tsia, mianatra aho.", "Non, j'apprends."]
+    ]
+  },
+  {
+    id: "u5", t: "Poser des questions", mg: "Manontany",
+    intro: "Les petits mots interrogatifs qui reviennent dans presque toutes les conversations.",
+    items: [
+      ["Inona ?", "quoi ? qu'est-ce que ?", "i-nou-na"],
+      ["Iza ?", "qui ?", "i-za"],
+      ["Aiza ?", "où ?", "aï-za"],
+      ["Oviana ?", "quand ?", "ou-vi-an'"],
+      ["Nahoana ?", "pourquoi ?", "na-hou-an'"],
+      ["Ahoana ?", "comment ?", "a-hou-an'"],
+      ["Ohatrinona ?", "combien ça coûte ?", "ou-a-tri-nou-n'"],
+      ["Ve", "particule de question (oui ou non)", "vé"],
+      ["Inona ity ?", "qu'est-ce que c'est ?", "i-nou-n' i-ti"],
+      ["Misy ... ?", "y a-t-il ... ?", "mi-si"],
+      ["Tsy misy", "il n'y en a pas", "tsi mi-si"]
+    ],
+    tip: "Pour une question oui ou non, on garde la phrase et on ajoute ve : Mandeha ve ianao ? (Tu y vas ?). Tsy devant un verbe ou devant misy donne la négation. Ity veut dire « ceci », io veut dire « cela »."
+  },
+  {
+    id: "u6", t: "Se faire comprendre", mg: "Azo ve ?",
+    intro: "Les phrases qui sauvent quand tu ne suis pas la conversation.",
+    items: [
+      ["Azoko", "je comprends", "a-zou-kou"],
+      ["Tsy azoko", "je ne comprends pas", "tsi a-zou-kou"],
+      ["Miadana azafady", "doucement, s'il vous plaît", "mi-a-da-n' a-za-fa-di"],
+      ["Avereno azafady", "répétez, s'il vous plaît", "a-vé-ré-nou a-za-fa-di"],
+      ["Mihainoa", "écoute !", "mi-haï-nou-a"],
+      ["Mazava", "c'est clair, d'accord", "ma-za-va"],
+      ["Tsy fantatro", "je ne sais pas", "tsi fan-ta-trou"],
+      ["Tsy misy olana", "pas de problème", "tsi mi-si ou-la-na"],
+      ["Maninona ianao ?", "qu'est-ce qui t'arrive ?", "ma-ni-nou-n' i-a-naou"],
+      ["Tsy maninona", "ce n'est rien", "tsi ma-ni-nou-na"],
+      ["Mazotoa", "courage !", "ma-zou-tou-a"],
+      ["Tsara be", "très bien", "tsar' bé"]
+    ],
+    tip: "Azoko vient d'un verbe qui veut dire « obtenir » : littéralement « c'est obtenu par moi ». Be veut dire « beaucoup » ou « très » : tsara be, très bien. Mazotoa s'entend partout pour encourager quelqu'un qui travaille ou qui fait un effort."
+  },
+  {
+    id: "u7", t: "À table", mg: "Sakafo",
+    intro: "Le riz est au centre du repas. Le reste s'appelle le laoka.",
+    items: [
+      ["Sakafo", "repas, nourriture", "sa-ka-fou"],
+      ["Vary", "riz (cuit)", "va-ri"],
+      ["Laoka", "plat qui accompagne le riz", "laou-ka"],
+      ["Rano", "eau", "ra-nou"],
+      ["Hena", "viande", "hé-na"],
+      ["Trondro", "poisson", "troun-drou"],
+      ["Sakay", "piment", "sa-kaï"],
+      ["Mihinana", "manger", "mi-hi-nan'"],
+      ["Misotro", "boire", "mi-sou-trou"],
+      ["Noana aho", "j'ai faim", "nou-a-na a-hou"],
+      ["Mangetaheta aho", "j'ai soif", "man-gué-té-ta a-hou"],
+      ["Voky aho", "je suis rassasié", "vou-ki a-hou"],
+      ["Matsiro", "délicieux", "ma-tsi-rou"],
+      ["Mandrosoa", "entre, sers-toi, je t'en prie", "man-drou-sou-a"]
+    ],
+    tip: "L'ordre des mots est verbe, puis objet, puis sujet : Mihinana vary aho, littéralement « mange riz moi », donc « je mange du riz ». Après le repas, on dit souvent voky aho pour dire qu'on n'a plus faim, sans vouloir refuser par politesse.",
+    dialog: [
+      ["Mandrosoa ! Vonona ny sakafo.", "Sers-toi ! Le repas est prêt."],
+      ["Misaotra ! Noana aho.", "Merci ! J'ai faim."],
+      ["Matsiro ve ny laoka ?", "Le laoka est bon ?"],
+      ["Matsiro be ! Voky aho, misaotra.", "Délicieux ! Je suis rassasié, merci."]
+    ]
+  },
+  {
+    id: "u8", t: "Les nombres", mg: "Ny isa",
+    intro: "De un à mille. Utile pour les prix, l'âge, l'heure.",
+    items: [
+      ["Iray", "1", "i-raï"],
+      ["Roa", "2", "rou-a"],
+      ["Telo", "3", "té-lou"],
+      ["Efatra", "4", "é-fatr'"],
+      ["Dimy", "5", "di-mi"],
+      ["Enina", "6", "é-ni-na"],
+      ["Fito", "7", "fi-tou"],
+      ["Valo", "8", "va-lou"],
+      ["Sivy", "9", "si-vi"],
+      ["Folo", "10", "fou-lou"],
+      ["Roapolo", "20", "rou-a-pou-lou"],
+      ["Zato", "100", "za-tou"],
+      ["Arivo", "1000", "a-ri-vou"]
+    ],
+    tip: "Pour les dizaines, on colle le chiffre à -polo : roapolo (20), telopolo (30), efapolo (40). Les milliers se disent avec arivo : roa arivo (2000), folo arivo (10 000), roapolo arivo (20 000). Dans la rue, les prix sont presque toujours annoncés en milliers d'ariary."
+  },
+  {
+    id: "u9", t: "Au marché et dans la rue", mg: "Any an-tsena",
+    intro: "Demander un prix, marchander, prendre le bus.",
+    items: [
+      ["Tsena", "marché", "tsé-na"],
+      ["Vola", "argent", "vou-la"],
+      ["Ariary", "ariary (la monnaie)", "a-ri-ar-i"],
+      ["Vidiny", "prix", "vi-di-ni"],
+      ["Mividy", "acheter", "mi-vi-di"],
+      ["Mivarotra", "vendre", "mi-va-rou-tr'"],
+      ["Lafo", "cher", "la-fou"],
+      ["Lafo loatra", "trop cher", "la-fou lou-a-tr'"],
+      ["Mora", "pas cher, facile", "mou-ra"],
+      ["Mora kokoa", "moins cher", "mou-ra kou-kou-a"],
+      ["Taxi-be", "bus de ville", "tak-si-bé"],
+      ["Lalana", "route, rue", "la-la-na"]
+    ],
+    tip: "Kokoa veut dire « plus » : mora kokoa, c'est « plus facile » ou « moins cher ». Loatra veut dire « trop ». Le marchandage est normal au marché, pas dans les boutiques à prix affichés.",
+    dialog: [
+      ["Ohatrinona ity ?", "Combien ça coûte ?"],
+      ["Roapolo arivo ariary.", "Vingt mille ariary."],
+      ["Lafo loatra ! Mora kokoa azafady.", "Trop cher ! Moins cher, s'il vous plaît."],
+      ["Eny, folo arivo ariary.", "D'accord, dix mille ariary."]
+    ]
+  },
+  {
+    id: "u10", t: "Aller, venir, quand ?", mg: "Mandeha",
+    intro: "Les verbes de mouvement et les mots du temps. Tu verras comment les temps se forment.",
+    items: [
+      ["Mandeha", "aller (présent)", "man-dé-a"],
+      ["Nandeha", "est allé (passé)", "nan-dé-a"],
+      ["Handeha", "ira (futur)", "han-dé-a"],
+      ["Avia", "viens !", "a-vi-a"],
+      ["Andeha", "allons-y, viens", "an-dé-a"],
+      ["Androany", "aujourd'hui", "an-drou-a-ni"],
+      ["Omaly", "hier", "ou-ma-li"],
+      ["Rahampitso", "demain", "ra-ham-pit-sou"],
+      ["Ankehitriny", "maintenant", "an-ké-i-tri-ni"],
+      ["Maraina", "matin", "ma-raï-na"],
+      ["Hariva", "soir", "ha-ri-va"],
+      ["Alina", "nuit", "a-li-na"],
+      ["Matory", "dormir", "ma-tou-ri"],
+      ["Hahita anao", "à bientôt (je te verrai)", "ha-hi-ta a-naou"]
+    ],
+    tip: "Les verbes changent de première lettre selon le temps : m- pour le présent, n- pour le passé, h- pour le futur. Mandeha, nandeha, handeha. Mihinana, nihinana, hihinana. Mividy, nividy, hividy. Une fois repérée, cette règle s'applique à la grande majorité des verbes."
+  },
+  {
+    id: "u11", t: "Les jours et le calendrier", mg: "Ny andro",
+    intro: "Les sept jours, plus semaine, mois et année.",
+    items: [
+      ["Alatsinainy", "lundi", "a-la-tsi-naï-ni"],
+      ["Talata", "mardi", "ta-la-ta"],
+      ["Alarobia", "mercredi", "a-la-rou-bi-a"],
+      ["Alakamisy", "jeudi", "a-la-ka-mi-si"],
+      ["Zoma", "vendredi", "zou-ma"],
+      ["Asabotsy", "samedi", "a-sa-bou-tsi"],
+      ["Alahady", "dimanche", "a-la-ha-di"],
+      ["Andro", "jour", "an-drou"],
+      ["Herinandro", "semaine", "hé-ri-nan-drou"],
+      ["Volana", "mois", "vou-la-na"],
+      ["Taona", "année", "tou-a-na"]
+    ],
+    tip: "Alahady, le dimanche, est le jour de la famille et de l'église. C'est souvent le moment des grands repas et des retrouvailles, donc un jour où tu entendras beaucoup de malgache."
+  }
+];
+
+// Petites phrases par unité : [malgache, français, note facultative]
+const PHRASES = {
+  u1: [
+    ["Salama, manao ahoana ianao ?", "Salut, comment vas-tu ?"],
+    ["Tsara aho, misaotra.", "Je vais bien, merci."],
+    ["Tonga soa ianao !", "Bienvenue à toi !"],
+    ["Veloma, mandra-pihaona !", "Au revoir, à la prochaine !"],
+    ["Eny, tsara.", "Oui, c'est bien."]
+  ],
+  u2: [
+    ["Ity ny reniko.", "Voici ma mère.", "Ity = ceci, ny = le/la. Reniko = ma mère."],
+    ["Ity ny raiko.", "Voici mon père."],
+    ["Manana rahalahy aho.", "J'ai un frère.", "Manana = avoir."],
+    ["Izy no anabaviko.", "C'est ma sœur.", "Izy no = c'est lui / c'est elle."]
+  ],
+  u3: [
+    ["Ity ny dadabeko.", "Voici mon grand-père."],
+    ["Ity ny nenibeko.", "Voici ma grand-mère."],
+    ["Tiako ny zanako.", "J'aime mon enfant.", "Tia = aimer, tiako = j'aime."],
+    ["Tiako ianao.", "Je t'aime bien."],
+    ["Izy no vadiko.", "C'est mon époux, c'est mon épouse."]
+  ],
+  u4: [
+    ["Ny anarako dia Rakoto.", "Je m'appelle Rakoto."],
+    ["Mianatra malagasy aho.", "J'apprends le malgache."],
+    ["Mahay miteny gasy ve ianao ?", "Tu sais parler malgache ?", "Mahay = savoir faire, miteny = parler."],
+    ["Tsia, mianatra aho.", "Non, j'apprends."]
+  ],
+  u5: [
+    ["Inona ity ?", "Qu'est-ce que c'est ?"],
+    ["Aiza ianao ?", "Où es-tu ?"],
+    ["Iza ianao ?", "Qui es-tu ?"],
+    ["Ohatrinona ity ?", "Combien ça coûte ?"],
+    ["Tsy misy olana.", "Il n'y a pas de problème."]
+  ],
+  u6: [
+    ["Tsy azoko.", "Je ne comprends pas."],
+    ["Azoko kely.", "Je comprends un peu.", "Kely = peu, petit."],
+    ["Miadana azafady.", "Doucement, s'il vous plaît."],
+    ["Avereno azafady.", "Répétez, s'il vous plaît."],
+    ["Tsy misy olana, mazotoa !", "Pas de problème, courage !"]
+  ],
+  u7: [
+    ["Mihinana vary aho.", "Je mange du riz."],
+    ["Misotro rano aho.", "Je bois de l'eau."],
+    ["Matsiro ny hena.", "La viande est délicieuse."],
+    ["Voky aho, misaotra.", "Je suis rassasié, merci."],
+    ["Mandrosoa, mihinana !", "Sers-toi, mange !"]
+  ],
+  u8: [
+    ["Folo arivo ariary.", "Dix mille ariary."],
+    ["Roa arivo ariary.", "Deux mille ariary."],
+    ["Manana zanaka telo aho.", "J'ai trois enfants."],
+    ["Dimy ny trondro.", "Il y a cinq poissons.", "Littéralement : les poissons sont cinq."]
+  ],
+  u9: [
+    ["Ohatrinona io ?", "Combien coûte cela ?", "Io = cela, ce qui est près de toi."],
+    ["Lafo loatra !", "Trop cher !"],
+    ["Mora kokoa azafady.", "Moins cher, s'il vous plaît."],
+    ["Mividy vary aho.", "J'achète du riz."],
+    ["Aiza ny tsena ?", "Où est le marché ?"]
+  ],
+  u10: [
+    ["Mandeha any an-tsena aho.", "Je vais au marché."],
+    ["Nandeha tany an-tsena aho omaly.", "Je suis allé au marché hier."],
+    ["Handeha any an-tsena aho rahampitso.", "J'irai au marché demain."],
+    ["Avia hihinana !", "Viens manger !"],
+    ["Hahita anao rahampitso.", "À demain, je te verrai demain."]
+  ],
+  u11: [
+    ["Alahady androany.", "Aujourd'hui, c'est dimanche."],
+    ["Rahampitso dia Alatsinainy.", "Demain, c'est lundi."],
+    ["Omaly dia Asabotsy.", "Hier, c'était samedi."],
+    ["Zoma ankehitriny.", "C'est vendredi maintenant."]
+  ]
+};
+
+(function () {
+  var KEY = "dingana-malagasy-v1";
+  var BOX_DAYS = [0, 0, 1, 3, 7, 14, 30];
+  var LESSONS = [
+    { t: "Les mots", d: "Reconnaître le sens des mots", thr: 0.7 },
+    { t: "Les mots, dans l'autre sens", d: "Retrouver et écrire les mots malgaches", thr: 0.7 },
+    { t: "Petites phrases", d: "Comprendre et reconstituer des phrases", thr: 0.7 },
+    { t: "Épreuve du sujet", d: "Tout mélangé, 80 % pour valider", thr: 0.8 }
+  ];
+  var app = document.getElementById("app");
+
+  function today() { var d = new Date(); return Math.floor((d.getTime() - d.getTimezoneOffset() * 60000) / 86400000); }
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+  function shuffle(a) { a = a.slice(); for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)); var t = a[i]; a[i] = a[j]; a[j] = t; } return a; }
+  function norm(s) { return String(s).toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9]/g, ""); }
+  function lev(a, b) {
+    var m = a.length, n = b.length, d = [], i, j;
+    for (i = 0; i <= m; i++) { d[i] = [i]; }
+    for (j = 1; j <= n; j++) d[0][j] = j;
+    for (i = 1; i <= m; i++) for (j = 1; j <= n; j++) d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1));
+    return d[m][n];
+  }
+
+  var S = { cards: {}, intro: {}, days: [], unlockAll: false, lessons: {}, custom: [], goal: 10, daily: { d: 0, n: 0 }, nextC: 1 };
+  function adopt(p) {
+    if (!p || typeof p !== "object") return;
+    S.cards = p.cards || {}; S.intro = p.intro || {}; S.days = p.days || []; S.unlockAll = !!p.unlockAll;
+    S.lessons = p.lessons || {}; S.custom = p.custom || []; S.goal = p.goal || 10; S.daily = p.daily || { d: 0, n: 0 }; S.nextC = p.nextC || (S.custom.length + 1);
+  }
+  try { var raw = localStorage.getItem(KEY); if (raw) adopt(JSON.parse(raw)); } catch (e) {}
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function touchDay() { var t = today(); if (S.days.indexOf(t) < 0) { S.days.push(t); S.days = S.days.slice(-400); } save(); }
+  function streak() { var t = today(), n = 0; var has = function (d) { return S.days.indexOf(d) >= 0; }; if (!has(t)) t -= 1; while (has(t)) { n++; t--; } return n; }
+  function dailyN() { return S.daily.d === today() ? S.daily.n : 0; }
+  function bumpDaily() { if (S.daily.d !== today()) S.daily = { d: today(), n: 0 }; S.daily.n++; }
+
+  // ---------- cartes ----------
+  var BASE = [];
+  UNITS.forEach(function (u, ui) {
+    u.items.forEach(function (it, i) { BASE.push({ id: u.id + ":" + i, kind: "w", u: ui, mg: it[0], fr: it[1], pr: it[2] }); });
+    (PHRASES[u.id] || []).forEach(function (p, i) { BASE.push({ id: u.id + ":p" + i, kind: "p", u: ui, mg: p[0], fr: p[1], pr: "", note: p[2] || "" }); });
+  });
+  function allCards() { return BASE.concat(S.custom.map(function (c) { return { id: "c:" + c.n, kind: "w", u: -1, mg: c.mg, fr: c.fr, pr: c.note || "", custom: true }; })); }
+  function cmap() { var m = {}; allCards().forEach(function (c) { m[c.id] = c; }); return m; }
+  function getCard(id) { return cmap()[id]; }
+  function unitWords(ui) { return BASE.filter(function (c) { return c.u === ui && c.kind === "w"; }); }
+  function unitPhrases(ui) { return BASE.filter(function (c) { return c.u === ui && c.kind === "p"; }); }
+  function introduce(ui, kind) {
+    var key = UNITS[ui].id + (kind === "p" ? "p" : "");
+    if (S.intro[key]) return;
+    S.intro[key] = true;
+    (kind === "p" ? unitPhrases(ui) : unitWords(ui)).forEach(function (c) { if (!S.cards[c.id]) S.cards[c.id] = { b: 1, d: today(), x: 0 }; });
+    save();
+  }
+  function dueCards() { var t = today(), m = cmap(); return Object.keys(S.cards).filter(function (id) { return m[id] && S.cards[id].d <= t; }).map(function (id) { return m[id]; }); }
+  function learnedCount() { return Object.keys(S.cards).filter(function (id) { return S.cards[id].b >= 3; }).length; }
+  function grade(id, level) { // 0 encore, 1 bien, 2 facile
+    var s = S.cards[id]; if (!s) return;
+    if (level === 0) { s.b = 1; s.x = (s.x || 0) + 1; } else s.b = Math.min(6, s.b + level);
+    s.d = today() + (level === 0 ? 0 : BOX_DAYS[s.b]);
+  }
+
+  // ---------- parcours ----------
+  function lessonStat(ui) { return S.lessons[UNITS[ui].id] || {}; }
+  function passedCount(ui) { var l = lessonStat(ui), n = 0; for (var k = 0; k < 4; k++) if (l[k] != null && l[k] >= LESSONS[k].thr) n++; return n; }
+  function lessonPassed(ui, k) { var v = lessonStat(ui)[k]; return v != null && v >= LESSONS[k].thr; }
+  function lessonOpen(ui, k) { return k === 0 || lessonPassed(ui, k - 1) || S.unlockAll; }
+  function isOpen(ui) { return S.unlockAll || ui === 0 || passedCount(ui - 1) >= 2; }
+
+  // ---------- voix ----------
+  var voice = null;
+  function findVoice() { try { var vs = window.speechSynthesis ? window.speechSynthesis.getVoices() : []; for (var i = 0; i < vs.length; i++) if (/^mg/i.test(vs[i].lang)) { voice = vs[i]; return; } } catch (e) {} }
+  findVoice(); try { if (window.speechSynthesis) window.speechSynthesis.onvoiceschanged = findVoice; } catch (e) {}
+  function say(text) { try { if (!voice) return; var u = new SpeechSynthesisUtterance(text); u.voice = voice; u.lang = voice.lang; window.speechSynthesis.cancel(); window.speechSynthesis.speak(u); } catch (e) {} }
+
+  // ---------- fabrique d'exercices ----------
+  function tokens(mg) { return mg.replace(/[?!.,]/g, "").split(/\s+/).filter(Boolean); }
+  function distract(c, field, n) {
+    var pool = allCards().filter(function (x) { return x.kind === c.kind && x.id !== c.id && x[field] !== c[field]; });
+    var same = shuffle(pool.filter(function (x) { return x.u === c.u; })), rest = shuffle(pool.filter(function (x) { return x.u !== c.u; }));
+    var out = [], seen = {}; seen[c[field]] = 1;
+    same.concat(rest).forEach(function (x) { if (out.length < n && !seen[x[field]]) { seen[x[field]] = 1; out.push(x); } });
+    return out;
+  }
+  function mkChoice(c, dir) {
+    var ans = dir === "mg" ? "fr" : "mg";
+    return { k: "choice", id: c.id, dir: dir, opts: shuffle([c].concat(distract(c, ans, 3))).map(function (x) { return x.id; }) };
+  }
+  function mkMatch(cs) { var ids = cs.map(function (c) { return c.id; }); return { k: "match", ids: ids, left: shuffle(ids), right: shuffle(ids) }; }
+  function mkType(c) { return { k: "type", id: c.id }; }
+  function mkTiles(c) {
+    var own = tokens(c.mg), extra = [];
+    shuffle(BASE.filter(function (x) { return x.kind === "p" && x.id !== c.id; })).forEach(function (p) { tokens(p.mg).forEach(function (t) { if (extra.length < 2 && own.indexOf(t) < 0 && extra.indexOf(t) < 0) extra.push(t); }); });
+    return { k: "tiles", id: c.id, bank: shuffle(own.concat(extra).map(function (t, i) { return { t: t, n: i }; })) };
+  }
+  function pick(a, n, from) { return a.slice(from || 0, (from || 0) + n); }
+  function buildLesson(ui, k) {
+    var W = shuffle(unitWords(ui)), P = shuffle(unitPhrases(ui)), ex = [], ms = Math.min(5, W.length), i;
+    if (k === 0) {
+      pick(W, 3).forEach(function (c) { ex.push(mkChoice(c, "mg")); });
+      ex.push(mkMatch(pick(W, ms, 3)));
+      pick(W, 3, 8).forEach(function (c) { ex.push(mkChoice(c, "mg")); });
+      ex.push(mkMatch(shuffle(W).slice(0, ms)));
+      pick(W, 2, 5).forEach(function (c) { ex.push(mkChoice(c, "mg")); });
+    } else if (k === 1) {
+      pick(W, 3).forEach(function (c) { ex.push(mkChoice(c, "fr")); });
+      ex.push(mkMatch(pick(W, ms, 2)));
+      pick(W, 3, 3).forEach(function (c) { ex.push(mkType(c)); });
+      pick(W, 1, 6).forEach(function (c) { ex.push(mkChoice(c, "fr")); });
+      ex.push(mkMatch(shuffle(W).slice(0, ms)));
+      pick(W, 3, 7).forEach(function (c) { ex.push(mkType(c)); });
+    } else if (k === 2) {
+      pick(P, 2).forEach(function (c) { ex.push(mkChoice(c, "mg")); });
+      pick(P, 2, 0).forEach(function (c) { ex.push(mkTiles(c)); });
+      ex.push(mkMatch(P.slice(0, Math.min(4, P.length))));
+      pick(P, 3, 2).forEach(function (c) { ex.push(mkChoice(c, "mg")); });
+      P.forEach(function (c) { ex.push(mkTiles(c)); });
+    } else {
+      pick(W, 3).forEach(function (c) { ex.push(mkChoice(c, Math.random() < 0.5 ? "mg" : "fr")); });
+      pick(W, 2, 3).forEach(function (c) { ex.push(mkType(c)); });
+      ex.push(mkMatch(pick(W, ms, 5)));
+      pick(P, 2).forEach(function (c) { ex.push(mkTiles(c)); });
+      pick(P, 2, 2).forEach(function (c) { ex.push(mkChoice(c, "mg")); });
+      ex = shuffle(ex);
+    }
+    return ex.filter(function (e) { return e.k !== "match" || e.ids.length >= 2; });
+  }
+  function exFor(c) {
+    if (c.kind === "p") return Math.random() < 0.5 ? mkTiles(c) : mkChoice(c, "mg");
+    var r = Math.random();
+    return r < 0.4 ? mkChoice(c, "mg") : r < 0.7 ? mkChoice(c, "fr") : mkType(c);
+  }
+  function buildFrom(cards) {
+    var ex = cards.map(exFor), ws = cards.filter(function (c) { return c.kind === "w"; });
+    if (ws.length >= 4) ex.splice(Math.min(3, ex.length), 0, mkMatch(ws.slice(0, 5)));
+    return ex;
+  }
+  function practiceCards(weak) {
+    var m = cmap(), t = today();
+    var ids = Object.keys(S.cards).filter(function (id) { return m[id] && (!weak || S.cards[id].x > 0); });
+    ids.sort(function (a, b) {
+      if (weak) return (S.cards[b].x || 0) - (S.cards[a].x || 0);
+      var da = S.cards[a].d <= t ? 0 : 1, db = S.cards[b].d <= t ? 0 : 1;
+      return da - db || S.cards[a].b - S.cards[b].b || Math.random() - 0.5;
+    });
+    return ids.slice(0, weak ? 8 : 10).map(function (id) { return m[id]; });
+  }
+
+  // ---------- navigation ----------
+  var V = { name: "home" };
+  function go(v) { V = v; render(); window.scrollTo(0, 0); }
+  function head(backAct, label) {
+    return '<div class="top"><div class="brand">Dingana<small>Malagasy</small></div>' +
+      (backAct ? '<button class="link" data-act="' + backAct + '">' + (label || "Retour") + '</button>' : '<button class="link" data-act="settings">Réglages</button>') + '</div>';
+  }
+  function dots(ui) { var h = '<span class="dots" title="Leçons réussies">'; for (var k = 0; k < 4; k++) h += '<i class="' + (lessonPassed(ui, k) ? "on" : "") + '"></i>'; return h + '</span>'; }
+  function big(c, txt) { return '<div class="big"' + (txt.length > 16 ? ' style="font-size:1.5rem"' : '') + '>' + esc(txt) + '</div>'; }
+
+  // ---------- accueil ----------
+  function homeView() {
+    var due = dueCards().length, st = streak(), n = learnedCount(), total = Object.keys(S.cards).length, dn = dailyN(), g = S.goal;
+    var h = head(null) + '<h1>Mianatra malagasy</h1><p class="muted">Du malgache d\'Antananarivo, pas à pas, autour de la famille et du quotidien. Quelques minutes par jour suffisent.</p>';
+    if (due > 0) h += '<div class="banner"><strong>' + due + ' carte' + (due > 1 ? 's' : '') + ' à réviser</strong><p class="muted">Réviser peu et souvent fixe mieux les mots que de tout relire d\'un coup.</p><div class="row"><button class="btn" data-act="review">Cartes à réviser</button><button class="btn alt" data-act="practice">Pratique mixte</button></div></div>';
+    else if (total) h += '<div class="banner"><strong>Aucune carte à réviser</strong><p class="muted">Tes prochaines cartes reviendront d\'elles-mêmes. Avance dans une leçon ou fais une pratique mixte.</p><button class="btn alt" data-act="practice">Pratique mixte</button></div>';
+    else h += '<div class="banner"><strong>Commence par la leçon 1</strong><p class="muted">Lis la fiche du sujet, puis fais les leçons dans l\'ordre.</p></div>';
+    h += '<div class="goal"><div class="stats"><span>Objectif du jour <b>' + Math.min(dn, g) + '/' + g + '</b> exercices</span></div><div class="progress"><i style="width:' + Math.min(100, Math.round(dn / g * 100)) + '%"></i></div></div>';
+    h += '<div class="stats"><span>Série <b>' + st + '</b> j</span><span>Mots acquis <b>' + n + '/' + total + '</b></span></div>';
+    h += '<ol class="path">';
+    UNITS.forEach(function (u, i) {
+      var open = isOpen(i), pc = passedCount(i), done = pc === 4;
+      h += '<li><button class="unit ' + (done ? 'done' : open ? 'open' : 'locked') + '" data-unit="' + i + '"' + (open ? '' : ' disabled') + '>' +
+        '<span class="no">' + (done ? '&#10003;' : (i + 1)) + '</span>' +
+        '<span class="nm"><em>' + esc(u.t) + '</em><span>' + esc(u.mg) + ' · ' + (open ? (done ? 'sujet validé' : pc + ' leçon' + (pc > 1 ? 's' : '') + ' sur 4') : 'réussis 2 leçons du sujet ' + i) + '</span></span>' + dots(i) + '</button></li>';
+    });
+    h += '</ol>';
+    var weak = practiceCards(true);
+    if (weak.length >= 3) {
+      h += '<div class="note"><span class="tag">À retravailler</span><p>' + weak.slice(0, 5).map(function (c) { return '<b>' + esc(c.mg) + '</b>'; }).join(', ') + '</p><button class="btn alt" data-act="weak">S\'entraîner sur ces mots</button></div>';
+    }
+    h += '<div class="row small"><button class="btn alt" data-act="dict">Dictionnaire</button><button class="btn alt" data-act="mine">Mes mots</button></div>';
+    h += '<p class="tag">Les rappels apparaissent ici à chaque visite. Les cartes réussies reviennent après 1, 3, 7, 14 puis 30 jours.</p>';
+    return h;
+  }
+
+  // ---------- fiche d'un sujet ----------
+  function unitView(ui) {
+    var u = UNITS[ui], ph = PHRASES[u.id] || [];
+    var h = head("home") + '<div><p class="tag">Sujet ' + (ui + 1) + ' · ' + esc(u.mg) + '</p><h2>' + esc(u.t) + '</h2></div><p class="muted">' + esc(u.intro) + '</p>';
+    h += '<h3>Les 4 leçons du sujet</h3><ul class="lessons">';
+    var firstNext = -1;
+    for (var k = 0; k < 4; k++) if (!lessonPassed(ui, k)) { firstNext = k; break; }
+    LESSONS.forEach(function (L, k) {
+      var open = lessonOpen(ui, k), pass = lessonPassed(ui, k), best = lessonStat(ui)[k];
+      h += '<li><button class="lesson ' + (pass ? 'passed' : !open ? 'locked' : k === firstNext ? 'next' : '') + '" data-lesson="' + k + '" data-unit="' + ui + '"' + (open ? '' : ' disabled') + '>' +
+        '<span class="no">' + (pass ? '&#10003;' : (k + 1)) + '</span><span class="nm"><em>' + esc(L.t) + '</em><span>' + esc(L.d) + '</span></span><span class="tag">' + (best != null ? Math.round(best * 100) + ' %' : open ? 'à faire' : 'verrouillée') + '</span></button></li>';
+    });
+    h += '</ul>';
+    if (passedCount(ui) === 4) h += '<p class="tag hi">Sujet validé. Refaire les leçons te garde en forme.</p>';
+    h += '<h3>Les mots</h3><ul class="words">';
+    u.items.forEach(function (it) {
+      h += '<li class="word"><span class="mg">' + esc(it[0]) + '</span><span class="fr">' + esc(it[1]) + '</span><span class="pr">' + esc(it[2]) + (voice ? ' <button class="say" data-say="' + esc(it[0]) + '">écouter</button>' : '') + '</span></li>';
+    });
+    h += '</ul><div class="note"><span class="tag">À retenir</span><p>' + esc(u.tip) + '</p></div>';
+    if (ph.length) {
+      h += '<h3>Petites phrases</h3><ul class="words">';
+      ph.forEach(function (p) {
+        h += '<li class="word"><span class="mg">' + esc(p[0]) + '</span><span class="fr">' + esc(p[1]) + '</span>' + (p[2] ? '<span class="pr">' + esc(p[2]) + '</span>' : '') + '</li>';
+      });
+      h += '</ul>';
+    }
+    if (u.dialog) {
+      h += '<h3>Petit dialogue</h3><div class="dial">';
+      u.dialog.forEach(function (l) { h += '<div class="line"><b>' + esc(l[0]) + '</b><span>' + esc(l[1]) + '</span></div>'; });
+      h += '</div>';
+    }
+    return h;
+  }
+
+  // ---------- exercices ----------
+  function newState(e) {
+    if (!e) return {};
+    if (e.k === "match") return { sel: null, done: [], bad: null, wrong: {}, mistakes: 0, over: false };
+    if (e.k === "tiles") return { placed: [], fb: null };
+    if (e.k === "type") return { fb: null };
+    return { picked: null };
+  }
+  function startEx(meta, ex) {
+    V = { name: "ex", title: meta.title, mode: meta.mode, ui: meta.ui, k: meta.k, thr: meta.thr, ex: ex, i: 0, first: 0, total: ex.length, st: newState(ex[0]), done: false };
+    render(); window.scrollTo(0, 0);
+  }
+  function startLesson(ui, k) {
+    introduce(ui, "w"); if (k >= 2) introduce(ui, "p");
+    startEx({ title: UNITS[ui].t + " · leçon " + (k + 1), mode: "lesson", ui: ui, k: k, thr: LESSONS[k].thr }, buildLesson(ui, k));
+  }
+  function startPractice(weak) {
+    var cs = practiceCards(weak);
+    if (cs.length < 4) { go({ name: "msg", text: "Fais d'abord une leçon : il faut au moins 4 mots dans tes cartes pour lancer une pratique." }); return; }
+    startEx({ title: weak ? "Mots à retravailler" : "Pratique mixte", mode: weak ? "weak" : "practice", thr: null }, buildFrom(cs));
+  }
+  function finishEx(ok) {
+    var e = V.ex[V.i];
+    if (e.retry) return;
+    bumpDaily(); if (ok) V.first++;
+    if (e.k === "match") e.ids.forEach(function (id) { grade(id, V.st.wrong[id] ? 0 : 1); });
+    else {
+      grade(e.id, ok ? 1 : 0);
+      if (!ok) {
+        var c = getCard(e.id), r = e.k === "choice" ? mkChoice(c, e.dir) : e.k === "type" ? mkType(c) : mkTiles(c);
+        r.retry = true; V.ex.push(r);
+      }
+    }
+    save();
+  }
+  function nextEx() {
+    V.i++;
+    if (V.i >= V.ex.length) { completeSession(); }
+    else V.st = newState(V.ex[V.i]);
+    render(); window.scrollTo(0, 0);
+  }
+  function completeSession() {
+    V.done = true;
+    var pct = V.total ? V.first / V.total : 0;
+    V.pct = pct;
+    if (V.mode === "lesson") {
+      var id = UNITS[V.ui].id, l = S.lessons[id] || (S.lessons[id] = {});
+      var before = passedCount(V.ui);
+      l[V.k] = Math.max(l[V.k] || 0, pct);
+      V.newlyValid = before < 4 && passedCount(V.ui) === 4;
+    }
+    touchDay();
+  }
+  function exView() {
+    if (V.done) return endView();
+    var e = V.ex[V.i], st = V.st, c = e.k === "match" ? null : getCard(e.id), h;
+    var back = V.mode === "lesson" ? "unit" : "home";
+    h = head("quit", "Quitter") + '<div class="progress"><i style="width:' + Math.round(V.i / V.ex.length * 100) + '%"></i></div><p class="tag">' + esc(V.title) + (e.retry ? ' · pour réessayer' : '') + '</p>';
+    if (e.k === "choice") {
+      var q = e.dir === "mg" ? c.mg : c.fr;
+      h += '<div class="card" style="min-height:150px"><p class="muted">' + (e.dir === "mg" ? 'Que veut dire…' : 'Comment dit-on…') + '</p>' + big(c, q) + (e.dir === "mg" && voice ? '<button class="say" data-say="' + esc(c.mg) + '">écouter</button>' : '') + '</div><div class="opts">';
+      e.opts.forEach(function (id) {
+        var o = getCard(id), cls = "opt";
+        if (st.picked) { if (id === e.id) cls += " right"; else if (id === st.picked) cls += " wrong"; }
+        h += '<button class="' + cls + '" data-opt="' + id + '"' + (st.picked ? ' disabled' : '') + '>' + esc(e.dir === "mg" ? o.fr : o.mg) + '</button>';
+      });
+      h += '</div>';
+      if (st.picked) h += '<button class="btn" data-act="next">Continuer</button>';
+    } else if (e.k === "match") {
+      h += '<h3>Associe chaque mot à sa traduction</h3><div class="match"><div class="col">';
+      e.left.forEach(function (id) {
+        var cls = "mt"; if (st.done.indexOf(id) >= 0) cls += " ok"; else if (st.sel === id) cls += " sel"; else if (st.bad && st.bad[0] === id) cls += " no";
+        h += '<button class="' + cls + '" data-ml="' + id + '"' + (st.done.indexOf(id) >= 0 ? ' disabled' : '') + '>' + esc(getCard(id).mg) + '</button>';
+      });
+      h += '</div><div class="col">';
+      e.right.forEach(function (id) {
+        var cls = "mt"; if (st.done.indexOf(id) >= 0) cls += " ok"; else if (st.bad && st.bad[1] === id) cls += " no";
+        h += '<button class="' + cls + '" data-mr="' + id + '"' + (st.done.indexOf(id) >= 0 ? ' disabled' : '') + '>' + esc(getCard(id).fr) + '</button>';
+      });
+      h += '</div></div>';
+      if (st.over) h += '<div class="fb ' + (st.mistakes ? 'ko' : 'ok') + '"><b>' + (st.mistakes ? st.mistakes + ' erreur' + (st.mistakes > 1 ? 's' : '') : 'Sans faute') + '</b></div><button class="btn" data-act="next">Continuer</button>';
+    } else if (e.k === "type") {
+      h += '<div class="card" style="min-height:150px"><p class="muted">Écris en malgache :</p>' + big(c, c.fr) + '</div>';
+      if (!st.fb) h += '<input class="inp" id="ans" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" aria-label="Ta réponse en malgache"><div class="row"><button class="btn" data-act="check">Vérifier</button><button class="btn alt" data-act="skip">Je ne sais pas</button></div><p class="tag">Les accents et les majuscules ne comptent pas.</p>';
+      else {
+        h += '<div class="fb ' + (st.fb.ok ? 'ok' : 'ko') + '"><b>' + (st.fb.ok ? (st.fb.near ? 'Presque, vérifie l\'orthographe' : 'Correct') : 'Pas tout à fait') + '</b><span>' + esc(st.fb.ans) + '</span></div><button class="btn" data-act="next">Continuer</button>';
+      }
+    } else {
+      var want = tokens(c.mg);
+      h += '<div class="card" style="min-height:130px"><p class="muted">Compose la phrase en malgache :</p>' + big(c, c.fr) + '</div>';
+      h += '<div class="tiles answerbox">' + st.placed.map(function (n, i) { var t = e.bank.filter(function (b) { return b.n === n; })[0]; return '<button class="tile" data-placed="' + i + '"' + (st.fb ? ' disabled' : '') + '>' + esc(t.t) + '</button>'; }).join("") + '</div>';
+      h += '<div class="tiles">' + e.bank.filter(function (b) { return st.placed.indexOf(b.n) < 0; }).map(function (b) { return '<button class="tile" data-tile="' + b.n + '"' + (st.fb ? ' disabled' : '') + '>' + esc(b.t) + '</button>'; }).join("") + '</div>';
+      if (!st.fb) h += '<button class="btn" data-act="check"' + (st.placed.length ? '' : ' disabled') + '>Vérifier</button>';
+      else h += '<div class="fb ' + (st.fb.ok ? 'ok' : 'ko') + '"><b>' + (st.fb.ok ? 'Correct' : 'Pas tout à fait') + '</b><span>' + esc(c.mg) + '</span></div><button class="btn" data-act="next">Continuer</button>';
+    }
+    return h;
+  }
+  function endView() {
+    var pct = Math.round(V.pct * 100), ok = V.thr == null || V.pct >= V.thr;
+    var h = head(null, "").replace('<button class="link" data-act="settings">Réglages</button>', '');
+    h += '<div class="center"><p class="tag">' + esc(V.title) + '</p><div class="score">' + pct + ' %</div>';
+    if (V.mode === "lesson") {
+      if (V.newlyValid) h += '<h2>Sujet validé</h2><p class="muted">Tu as réussi les 4 leçons de « ' + esc(UNITS[V.ui].t) + ' ». Les cartes te le feront revoir régulièrement.</p>';
+      else if (ok) h += '<h2>Leçon réussie</h2><p class="muted">' + (V.k < 3 ? 'La leçon suivante est débloquée.' : 'Épreuve réussie.') + '</p>';
+      else h += '<h2>Il faut ' + Math.round(V.thr * 100) + ' % pour valider</h2><p class="muted">Relis la fiche du sujet, puis recommence. Les mots ratés reviendront plus vite dans tes cartes.</p>';
+      h += '<div class="row">';
+      if (ok && V.k < 3) h += '<button class="btn" data-lesson="' + (V.k + 1) + '" data-unit="' + V.ui + '">Leçon suivante</button>';
+      h += '<button class="btn alt" data-lesson="' + V.k + '" data-unit="' + V.ui + '">Refaire</button><button class="btn alt" data-unit="' + V.ui + '">Fiche du sujet</button></div>';
+    } else {
+      h += '<h2>' + (pct >= 80 ? 'Très bien' : 'Continue comme ça') + '</h2><p class="muted">Les mots ratés reviendront plus vite dans tes cartes.</p><div class="row"><button class="btn" data-act="' + (V.mode === "weak" ? "weak" : "practice") + '">Encore une série</button><button class="btn alt" data-act="home">Accueil</button></div>';
+    }
+    return h + '</div>';
+  }
+
+  // ---------- cartes à réviser ----------
+  function startReview(list) {
+    var q = shuffle(list).slice(0, 20).map(function (c) { return c.id; });
+    V = { name: "review", q: q, i: 0, shown: false, total: q.length, again: 0 };
+  }
+  function reviewView() {
+    if (!V.q.length || V.i >= V.q.length) {
+      return head("home") + '<div class="center"><p class="tag">Séance terminée</p><h2>' + (V.total ? 'Bravo, ' + V.total + ' carte' + (V.total > 1 ? 's' : '') + ' revue' + (V.total > 1 ? 's' : '') : 'Aucune carte à réviser') + '</h2><p class="muted">Reviens demain pour la suite. Les mots difficiles reviendront plus tôt.</p><button class="btn" data-act="home">Retour à l\'accueil</button></div>';
+    }
+    var c = getCard(V.q[V.i]);
+    var h = head("home") + '<div class="progress"><i style="width:' + Math.round(V.i / V.q.length * 100) + '%"></i></div><p class="tag">Carte ' + (V.i + 1) + ' sur ' + V.q.length + '</p>';
+    h += '<div class="card">' + big(c, c.mg);
+    if (V.shown) h += '<div class="ans">' + esc(c.fr) + '</div>' + (c.pr ? '<div class="pron">' + esc(c.pr) + '</div>' : '') + (voice ? '<button class="say" data-say="' + esc(c.mg) + '">écouter</button>' : '');
+    else h += '<p class="muted">Que veut dire ce ' + (c.kind === "p" ? 'texte' : 'mot') + ' ?</p>';
+    h += '</div>';
+    if (!V.shown) h += '<button class="btn" data-act="reveal">Voir la réponse</button>';
+    else h += '<div class="rate"><button class="btn again" data-grade="0">Encore</button><button class="btn" data-grade="1">Bien</button><button class="btn easy" data-grade="2">Facile</button></div>';
+    return h;
+  }
+
+  // ---------- dictionnaire, mes mots, réglages ----------
+  function dictList(q) {
+    var n = norm(q), out = allCards().filter(function (c) { return !n || norm(c.mg).indexOf(n) >= 0 || norm(c.fr).indexOf(n) >= 0; });
+    var h = out.slice(0, 80).map(function (c) {
+      return '<li><b>' + esc(c.mg) + '</b><span>' + esc(c.fr) + (c.pr && c.kind === "w" ? ' · ' + esc(c.pr) : '') + ' · ' + (c.u < 0 ? 'mes mots' : esc(UNITS[c.u].t)) + '</span></li>';
+    }).join("");
+    return h || '<li><span>Aucun résultat. Tu peux ajouter ce mot dans « Mes mots ».</span></li>';
+  }
+  function dictView() {
+    return head("home") + '<h2>Dictionnaire</h2><input class="inp" id="q" type="search" placeholder="Chercher en malgache ou en français" aria-label="Chercher un mot" autocomplete="off"><ul class="dict" id="dl">' + dictList("") + '</ul>';
+  }
+  function mineView() {
+    var h = head("home") + '<h2>Mes mots</h2><p class="muted">Note ici les mots que tu entends en famille. Ils rejoignent tes cartes de révision et tes pratiques mixtes.</p>';
+    h += '<div class="form"><input class="inp" id="cmg" type="text" placeholder="Mot ou phrase en malgache" aria-label="En malgache" autocomplete="off"><input class="inp" id="cfr" type="text" placeholder="Sens en français" aria-label="En français" autocomplete="off"><input class="inp" id="cnote" type="text" placeholder="Note facultative (qui l\'a dit, prononciation)" aria-label="Note" autocomplete="off"><button class="btn" data-act="addmine">Ajouter</button>' + (V.msg ? '<p class="tag hi">' + esc(V.msg) + '</p>' : '') + '</div>';
+    if (S.custom.length) {
+      h += '<ul class="dict">' + S.custom.map(function (c) { return '<li><b>' + esc(c.mg) + '</b><span>' + esc(c.fr) + (c.note ? ' · ' + esc(c.note) : '') + '</span><button class="link" data-del="' + c.n + '" style="align-self:flex-start">Supprimer</button></li>'; }).join("") + '</ul>';
+    } else h += '<p class="muted">Rien pour l\'instant. Ajoute ton premier mot.</p>';
+    return h;
+  }
+  function settingsView() {
+    var h = head("home") + '<h2>Réglages</h2><div class="set"><label><input type="checkbox" id="unl"' + (S.unlockAll ? ' checked' : '') + '> Débloquer tous les sujets et toutes les leçons</label>';
+    h += '<label for="goal">Objectif du jour</label><select class="inp" id="goal">' + [5, 10, 20, 30].map(function (g) { return '<option value="' + g + '"' + (S.goal === g ? ' selected' : '') + '>' + g + ' exercices</option>'; }).join("") + '</select>';
+    h += '<h3>Sauvegarde</h3><p class="muted small">Ta progression reste dans ce navigateur. Pour la passer d\'un appareil à l\'autre, génère le code, copie-le, puis colle-le dans l\'autre appareil et importe-le.</p><textarea class="inp" id="bk" aria-label="Code de sauvegarde" spellcheck="false"></textarea><div class="row"><button class="btn alt" data-act="export">Générer le code</button><button class="btn alt" data-act="import">Importer ce code</button></div>' + (V.msg ? '<p class="tag hi">' + esc(V.msg) + '</p>' : '');
+    h += (V.confirm ? '<p>Effacer toute ta progression ?</p><div class="row"><button class="btn" style="background:var(--bad);color:#fff" data-act="resetyes">Oui, tout effacer</button><button class="btn alt" data-act="resetno">Annuler</button></div>' : '<button class="btn alt" data-act="reset">Effacer ma progression</button>') + '</div>';
+    return h;
+  }
+
+  function render() {
+    var h;
+    if (V.name === "home") h = homeView();
+    else if (V.name === "unit") h = unitView(V.ui);
+    else if (V.name === "ex") h = exView();
+    else if (V.name === "review") h = reviewView();
+    else if (V.name === "dict") h = dictView();
+    else if (V.name === "mine") h = mineView();
+    else if (V.name === "settings") h = settingsView();
+    else h = head("home") + '<div class="center"><p>' + esc(V.text) + '</p><button class="btn" data-act="home">Retour</button></div>';
+    app.innerHTML = h;
+    if (V.name === "ex") { var inp = document.getElementById("ans"); if (inp) inp.focus(); }
+  }
+
+  // ---------- actions ----------
+  function doCheck() {
+    var e = V.ex[V.i], st = V.st, c = getCard(e.id);
+    if (e.k === "type") {
+      var el = document.getElementById("ans"), g = norm(el ? el.value : "");
+      if (!g) return;
+      var cands = allCards().filter(function (x) { return x.fr === c.fr; }).map(function (x) { return norm(x.mg); });
+      var exact = cands.indexOf(g) >= 0, near = !exact && cands.some(function (x) { return x.length >= 5 && lev(x, g) <= 1; });
+      st.fb = { ok: exact || near, near: near, ans: c.mg };
+      finishEx(exact || near);
+    } else if (e.k === "tiles") {
+      var want = tokens(c.mg).join(" ").toLowerCase(), got = st.placed.map(function (n) { return e.bank.filter(function (b) { return b.n === n; })[0].t; }).join(" ").toLowerCase();
+      st.fb = { ok: want === got };
+      finishEx(want === got);
+    }
+    render();
+  }
+  function doMatch(side, id) {
+    var e = V.ex[V.i], st = V.st;
+    if (st.over || st.bad) return;
+    if (side === "l") { st.sel = st.sel === id ? null : id; render(); return; }
+    if (!st.sel) return;
+    if (st.sel === id) {
+      st.done.push(id); st.sel = null;
+      if (st.done.length === e.ids.length) { st.over = true; finishEx(st.mistakes === 0); }
+      render();
+    } else {
+      st.mistakes++; st.wrong[st.sel] = true; st.wrong[id] = true; st.bad = [st.sel, id]; st.sel = null; render();
+      var cur = st;
+      setTimeout(function () { if (V.st === cur) { cur.bad = null; render(); } }, 600);
+    }
+  }
+  function backup() { try { return btoa(unescape(encodeURIComponent(JSON.stringify(S)))); } catch (e) { return ""; } }
+
+  app.addEventListener("input", function (ev) {
+    if (ev.target.id === "q") { var dl = document.getElementById("dl"); if (dl) dl.innerHTML = dictList(ev.target.value); }
+  });
+  app.addEventListener("keydown", function (ev) {
+    if (ev.key === "Enter" && ev.target.id === "ans") { ev.preventDefault(); doCheck(); }
+  });
+  app.addEventListener("change", function (ev) {
+    if (ev.target.id === "unl") { S.unlockAll = ev.target.checked; save(); }
+    if (ev.target.id === "goal") { S.goal = +ev.target.value || 10; save(); }
+  });
+  app.addEventListener("click", function (ev) {
+    var t = ev.target.closest("button");
+    if (!t) return;
+    var d = t.dataset;
+    if (d.say) { say(d.say); return; }
+    if (d.opt) {
+      if (V.st.picked) return;
+      var e = V.ex[V.i]; V.st.picked = d.opt; finishEx(d.opt === e.id); render(); return;
+    }
+    if (d.ml) { doMatch("l", d.ml); return; }
+    if (d.mr) { doMatch("r", d.mr); return; }
+    if (d.tile !== undefined) { if (!V.st.fb) { V.st.placed.push(+d.tile); render(); } return; }
+    if (d.placed !== undefined) { if (!V.st.fb) { V.st.placed.splice(+d.placed, 1); render(); } return; }
+    if (d.grade !== undefined) {
+      var id = V.q[V.i], lv = +d.grade; grade(id, lv); touchDay();
+      if (lv === 0 && V.again < 6) { V.q.push(id); V.again++; }
+      V.i++; V.shown = false; render(); return;
+    }
+    if (d.lesson !== undefined) { startLesson(+d.unit, +d.lesson); return; }
+    if (d.del) { S.custom = S.custom.filter(function (c) { return String(c.n) !== d.del; }); delete S.cards["c:" + d.del]; save(); render(); return; }
+    if (d.unit !== undefined && !d.act) { go({ name: "unit", ui: +d.unit }); return; }
+    var a = d.act;
+    if (a === "home") go({ name: "home" });
+    else if (a === "settings") go({ name: "settings" });
+    else if (a === "dict") go({ name: "dict" });
+    else if (a === "mine") go({ name: "mine" });
+    else if (a === "quit") { if (V.mode === "lesson") go({ name: "unit", ui: V.ui }); else go({ name: "home" }); }
+    else if (a === "review") { startReview(dueCards()); render(); }
+    else if (a === "reveal") { V.shown = true; render(); }
+    else if (a === "practice") startPractice(false);
+    else if (a === "weak") startPractice(true);
+    else if (a === "check") doCheck();
+    else if (a === "skip") { V.st.fb = { ok: false, ans: getCard(V.ex[V.i].id).mg }; finishEx(false); render(); }
+    else if (a === "next") nextEx();
+    else if (a === "addmine") {
+      var mg = document.getElementById("cmg").value.trim(), fr = document.getElementById("cfr").value.trim(), note = document.getElementById("cnote").value.trim();
+      if (!mg || !fr) { V.msg = "Il faut le mot malgache et son sens en français."; render(); return; }
+      var n = S.nextC++; S.custom.push({ n: n, mg: mg, fr: fr, note: note }); S.cards["c:" + n] = { b: 1, d: today(), x: 0 }; save(); V.msg = "Ajouté à tes cartes."; render();
+    }
+    else if (a === "export") {
+      var code = backup(), ta = document.getElementById("bk"); ta.value = code; ta.select();
+      try { navigator.clipboard.writeText(code).then(function () { V.msg = "Code copié."; }, function () { V.msg = "Copie le code à la main."; }); } catch (er) { V.msg = "Copie le code à la main."; }
+    }
+    else if (a === "import") {
+      var v = document.getElementById("bk").value.trim();
+      try { adopt(JSON.parse(decodeURIComponent(escape(atob(v))))); save(); V.msg = "Progression importée."; } catch (er) { V.msg = "Ce code n'est pas valide."; }
+      render();
+    }
+    else if (a === "reset") { V.confirm = true; render(); }
+    else if (a === "resetno") { V.confirm = false; render(); }
+    else if (a === "resetyes") { S = { cards: {}, intro: {}, days: [], unlockAll: false, lessons: {}, custom: [], goal: 10, daily: { d: 0, n: 0 }, nextC: 1 }; save(); go({ name: "home" }); }
+  });
+
+  render();
+})();
+
+</script>
+
+</body></html>
